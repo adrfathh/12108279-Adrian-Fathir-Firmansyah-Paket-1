@@ -86,7 +86,7 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                  <form action="{{route('login')}} method="POST">
+                  <form action="{{route('login')}}" method="POST">
                     @csrf
                     <div class="mb-3">
                       <input name="username" type="username" class="form-control form-control-lg" placeholder="Username" aria-label="Username">

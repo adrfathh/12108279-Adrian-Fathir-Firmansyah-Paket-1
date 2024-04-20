@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AuthController extends Controller
 {
@@ -16,9 +16,28 @@ class AuthController extends Controller
         return view ('auth.sign-up');
     }
 
-    public function registerStore(Request $request)
+    public function authRegister(Request $request)
     {
+        $validateData = $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+        ]);
 
+        $validateData['password'] = bcrypt($validateData['password']);
+
+        User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'address' => $request->address,
+            'password' => Hash::make($request->password),
+            'role' => 'user'
+        ]);
+
+        return redirect()->route('signIn')->with('success', 'Regist berhasil, silahkan login!');
     }
 
     public function signIn(){
@@ -45,9 +64,11 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect ('/login-page')->with('success', 'Logged out successfully');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/signIn');
     }
 }

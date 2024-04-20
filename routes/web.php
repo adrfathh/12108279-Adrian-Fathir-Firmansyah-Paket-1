@@ -17,23 +17,21 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('auth.sign-in');
-// });
-
-// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 // AUTH
 
 Route::post('/login', [AuthController::class, 'authLogin'])->name('login');
+Route::post('/register', [AuthController::class, 'authRegister'])->name('register');
 Route::post('/proses_login', [AuthController::class, 'proses_login'])->name('proses_login');
-Route::get('/signUp', [AuthController::class, 'signUp']);
-Route::get('/signIn', [AuthController::class, 'signIn']);
-
+Route::get('/signUp', [AuthController::class, 'signUp'])->name('signUp');
+Route::get('/signIn', [AuthController::class, 'signIn'])->name('signIn');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // DASHBOARD ADMIN
 
 Route::get('/admin/index', [AdminController::class, 'index'])->name('admin');
+Route::get('/admin/users', [AdminController::class, 'users'])->name('users');
+Route::get('/admin/addUser', [AdminController::class, 'addUser'])->name('addUser');
+Route::post('/userStore', [AdminController::class, 'userStore'])->name('userStore');
 
 // DASHBOARD STAFF
 

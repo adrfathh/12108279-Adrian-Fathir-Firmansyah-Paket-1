@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Argon Dashboard 2 by Creative Tim
+    Add Users
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -91,8 +91,8 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-            <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p>
+            <h1 class="text-white mt-6">Add user
+            </h1>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@
               <h5>Perpustakaan Digital</h5>
             </div>
             <div class="card-body">
-              <form action="{{ route('register') }}" method="post">
+              <form action="{{ route('userStore') }}" method="post">
                 @csrf
                 <div class="mb-3">
                   <input name="name" type="text" class="form-control" placeholder="Name">
@@ -122,10 +122,16 @@
                 <div class="mb-3">
                   <input name="address" type="text" class="form-control" placeholder="Address">
                 </div>
-                <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                <div class="mb-3">
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                        <option value="staff">Staff</option>
+                      </select>
                 </div>
-                <p class="text-sm mt-3 mb-0">Already have an account? <a href="/signIn" class="text-dark font-weight-bolder">Sign in</a></p>
+                <div class="text-center">
+                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Add</button>
+                </div>
               </form>
             </div>
           </div>
