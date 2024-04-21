@@ -19,4 +19,19 @@ class Books extends Model
         'category',
         'book_status',
     ];
+
+    public function borrow()
+    {
+        return $this->hasMany(Borrow::class, 'book_id');
+    }
+    
+    public function collection()
+    {
+        return $this->hasMany(Collection::class);
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

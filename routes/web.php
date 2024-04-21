@@ -24,14 +24,23 @@ Route::post('/register', [AuthController::class, 'authRegister'])->name('registe
 Route::post('/proses_login', [AuthController::class, 'proses_login'])->name('proses_login');
 Route::get('/signUp', [AuthController::class, 'signUp'])->name('signUp');
 Route::get('/signIn', [AuthController::class, 'signIn'])->name('signIn');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // DASHBOARD ADMIN
 
 Route::get('/admin/index', [AdminController::class, 'index'])->name('admin');
+
 Route::get('/admin/users', [AdminController::class, 'users'])->name('users');
 Route::get('/admin/addUser', [AdminController::class, 'addUser'])->name('addUser');
 Route::post('/userStore', [AdminController::class, 'userStore'])->name('userStore');
+Route::get('/editUser/{id}', [AdminController::class, 'editUser'])->name('editUser');
+Route::put('/userUpdate/{id}', [AdminController::class, 'userUpdate'])->name('userUpdate');
+
+Route::get('/admin/addBook', [AdminController::class, 'addBook'])->name('addBook');
+Route::post('/bookStore', [AdminController::class, 'bookStore'])->name('bookStore');
+
+Route::get('/admin/categories', [AdminController::class, 'categories'])->name('categories');
+Route::post('/categoriesStore', [AdminController::class, 'categoriesStore'])->name('categoriesStore');
 
 // DASHBOARD STAFF
 

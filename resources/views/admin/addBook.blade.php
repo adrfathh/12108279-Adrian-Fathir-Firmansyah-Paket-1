@@ -91,7 +91,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mt-6">Add user
+            <h1 class="text-white mt-6">Add Book
             </h1>
           </div>
         </div>
@@ -105,28 +105,28 @@
               <h5>Perpustakaan Digital</h5>
             </div>
             <div class="card-body">
-              <form action="{{ route('userStore') }}" method="post">
+              <form action="{{ route('bookStore') }}" method="post">
                 @csrf
                 <div class="mb-3">
-                  <input name="name" type="text" class="form-control" placeholder="Name">
+                  <input name="author" type="text" class="form-control" placeholder="Author">
                 </div>
                 <div class="mb-3">
-                  <input name="username" type="text" class="form-control" placeholder="Username">
+                  <input name="title" type="text" class="form-control" placeholder="Title">
                 </div>
                 <div class="mb-3">
-                  <input name="password" type="password" class="form-control" placeholder="Password">
+                  <input name="publisher" type="texr" class="form-control" placeholder="Publisher">
                 </div>
                 <div class="mb-3">
-                  <input name="email" type="email" class="form-control" placeholder="Email">
+                  <input name="year_publish" type="number" class="form-control" placeholder="Year Publish">
                 </div>
                 <div class="mb-3">
-                  <input name="address" type="text" class="form-control" placeholder="Address">
+                  <input name="image" type="file" class="form-control" placeholder="Image">
                 </div>
                 <div class="mb-3">
-                    <select name="role" class="form-select" aria-label="Default select example">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
+                    <select name="category" class="form-select" aria-label="Default select example">
+                      @foreach ($categories as $categories)
+                      <option value="{{ $categories->name_categories }}">{{ $categories->name_categories }}</option>
+                      @endforeach
                     </select>
                 </div>
                 <div class="text-center">

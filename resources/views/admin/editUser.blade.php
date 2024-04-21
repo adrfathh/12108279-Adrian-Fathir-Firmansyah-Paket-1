@@ -105,25 +105,27 @@
               <h5>Perpustakaan Digital</h5>
             </div>
             <div class="card-body">
-              <form action="{{ route('userStore') }}" method="post">
+              <form action="/userUpdate/$id" method="post">
                 @csrf
+                @method('PUT')
                 <div class="mb-3">
-                  <input name="name" type="text" class="form-control" placeholder="Name">
+                  <input name="name" type="text" class="form-control" placeholder="{{ $users->name }}">
                 </div>
                 <div class="mb-3">
-                  <input name="username" type="text" class="form-control" placeholder="Username">
+                  <input name="username" type="text" class="form-control" placeholder="{{ $users->username }}">
                 </div>
                 <div class="mb-3">
-                  <input name="password" type="password" class="form-control" placeholder="Password">
+                  <input name="password" type="password" class="form-control" placeholder="{{ $users->password }}">
                 </div>
                 <div class="mb-3">
-                  <input name="email" type="email" class="form-control" placeholder="Email">
+                  <input name="email" type="email" class="form-control" placeholder="{{ $users->email }}">
                 </div>
                 <div class="mb-3">
-                  <input name="address" type="text" class="form-control" placeholder="Address">
+                  <input name="address" type="text" class="form-control" placeholder="{{ $users->address }}">
                 </div>
                 <div class="mb-3">
                     <select name="role" class="form-select" aria-label="Default select example">
+                        <option value="{{ $users->name }}">{{ $users->name }}</option>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                         <option value="staff">Staff</option>
