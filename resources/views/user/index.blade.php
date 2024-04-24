@@ -33,6 +33,7 @@
   <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -49,48 +50,48 @@
     <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="./pages/dashboard.html">
+          <a class="nav-link active" href="{{route('user.books')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Books</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('users') }}">
+          <a class="nav-link " href="{{route('user.wishlist')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Tables</span>
+            <span class="nav-link-text ms-1">Wishlist</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="./pages/billing.html">
+          <a class="nav-link " href="{{route('user.borrowed')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Billing</span>
+            <span class="nav-link-text ms-1">Borrowed</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="./pages/virtual-reality.html">
+          <a class="nav-link " href="{{route('user.review')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-app text-info text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Review</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="./pages/rtl.html">
+          <a class="nav-link " href="{{route('user.history')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">History</span>
           </a>
         </li>
     </div>
-    <div class="sidenav-footer mx-3 ">
-      <a class="btn btn-primary btn-sm mb-0 w-100" href="{{ route('logout') }}" type="button">Log Out</a>
+    <div class="sidenav-footer mx-3" style="margin-top: 19rem;">
+      <a class="btn btn-primary btn-sm mb-0 w-100" href="{{route('logout')}}" type="button">Log Out</a>
     </div>
   </aside>
   <main class="main-content position-relative border-radius-lg ">
@@ -109,31 +110,83 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
+      @foreach($books as $books)
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
             <div class="card-body p-3">
               <div class="row">
-                <div class="col-8">
+                <div class="">
                   <div class="numbers">
-                      <h5 class="font-weight-bolder">
-                        Bumi
-                      </h5>
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Tere Liye</p>
-                    <img class="rounded" style="height: 30rem; margin-top: 1rem;" src="/assets/img/bumi.jpg">
-                    <p class="mb-0">
-                      since yesterday
-                    </p>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                    <h5 class="font-weight-bolder m-0">
+                      {{ $books->title }}
+                      <h6>{{ $books->category }}</h6>
+                    </h5>
+                    <div class="d-flex justify-content-between" style="gap: 2px;">
+                      <p class="text-sm mb-0 text-uppercase font-weight-bold">{{ $books->author }}</p>
+                    @if ($books->borrow->where('borrow_status', 'Dipinjam')->isNotEmpty())
+                      <p class="text-danger text-sm mb-0 text-uppercase font-weight-bold">Tidak Tersedia</p>
+                    @else
+                      <p class="text-info text-sm mb-0 text-uppercase font-weight-bold">Tersedia</p>
+                    @endif
+                    </div>
+                    <img class="rounded" style="height: 30rem; margin-top: 1rem;" src="{{ asset('storage/book/z0Ska9SsdgGH2eq1BM2e6cCAzPz2Hwt5feaKq8w6.jpg') }}">
+                    <p class="text-sm mt-2 font-weight-bold text-center" style="margin-bottom: 1.5rem;">{{ $books->publisher }} - {{ $books->year_publish }}</p>
+                    <div class="d-flex" style="gap: 1rem;">
+                      <!-- <a href="{{ route('user.addReview', $books -> id) }}" class="btn btn-info" tabindex="-1" role="button">Add Review</a> -->
+                      @if ($books->review->where('user_id', Auth::user()->id)->count() == 0)
+                        <!-- If user has not reviewed the book -->
+                        <div class="d-flex justify-content-center">
+                          <a href="{{ route('user.addReview', $books->id) }}" class="btn btn-info" tabindex="-1" role="button">Add Review</a>
+                        </div>
+                      @else
+                        <!-- If user has reviewed the book -->
+                        <div class="d-flex justify-content-center">
+                          <a href="{{ route('user.editReview', $books->review->where('user_id', Auth::user()->id)->first()->id) }}" class="btn btn-info" tabindex="-1" role="button">Edit Review</a>
+                        </div>
+                      @endif
+                      @php
+                        $hasBorrowed = $books->borrow->where('borrow_status', 'Dipinjam')->isNotEmpty();
+                      @endphp
+                      @if ($hasBorrowed)
+                        @if ($books->borrow->where('borrow_status', 'Dipinjam')->first()->user_id != Auth::user()->id)
+                          <button type="button" class="btn btn-danger" style="text-transform: none;">Borrowed</button>
+                        @endif
+                      @else
+                        <form action="{{ route('user.borrow', $books -> id) }}" method="post">
+                          @csrf
+                          <input type="hidden" name="book_id" value="{{ $books -> id }}">
+                          <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                          <input type="hidden" name="borrow_status" value="Dipinjam">
+                          <input type="hidden" name="borrow_date" value="{{ date('Y-m-d') }}">
+                          <input type="hidden" name="return_date" value="-">
+                          <button type="submit" class="btn btn-success" style="text-transform: none;">Borrow</button>
+                          <!-- <input class="btn btn-success" type="submit" value="Borrow"> -->
+                        </form>
+                      @endif
+                      <form action="{{ route('user.addWishlist', $books -> id) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="book_id" value="{{ $books->id }}">
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                        @if ($books->collection->where('user_id', Auth::user()->id)->count() == 0)
+                          <button type="submit" class="btn btn-warning">Wishlist</button>
+                        @else
+                          <?php $hasBorrowed = $books->collection->where('user_id', Auth::user()->id)->isNotEmpty(); ?>
+                          @if ($hasBorrowed)
+                            <button type="button" class="btn btn-warning" disabled>Wishlist</button>
+                          @else
+                            <button type="submit" class="btn btn-warning">Wishlist</button>
+                          @endif
+                        @endif
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        @endforeach
+        <!-- <a href="" class="btn btn-primary mt-3" tabindex="-1" role="button" aria-disabled="true">Add Book</a> -->
       </div>
   </main>
   <div class="fixed-plugin">

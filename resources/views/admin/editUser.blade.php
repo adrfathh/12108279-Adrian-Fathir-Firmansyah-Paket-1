@@ -91,7 +91,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mt-6">Add user
+            <h1 class="text-white mt-6">Edit user
             </h1>
           </div>
         </div>
@@ -105,27 +105,57 @@
               <h5>Perpustakaan Digital</h5>
             </div>
             <div class="card-body">
-              <form action="/userUpdate/$id" method="post">
+              <!-- <form action="/userUpdate/$id" method="post">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
-                  <input name="name" type="text" class="form-control" placeholder="{{ $users->name }}">
+                  <input name="name" type="text" class="form-control" value="{{ $users->name }}" id="name{{ $users->id }}">
                 </div>
                 <div class="mb-3">
-                  <input name="username" type="text" class="form-control" placeholder="{{ $users->username }}">
+                  <input name="username" type="text" class="form-control" value="{{ $users->username }}" id="username{{ $users->id }}">
                 </div>
                 <div class="mb-3">
-                  <input name="password" type="password" class="form-control" placeholder="{{ $users->password }}">
+                  <input name="password" type="password" class="form-control" value="{{ $users->password }}" id="password{{ $users->id }}">
                 </div>
                 <div class="mb-3">
-                  <input name="email" type="email" class="form-control" placeholder="{{ $users->email }}">
+                  <input name="email" type="email" class="form-control" value="{{ $users->email }}" id="email{{ $users->id }}">
                 </div>
                 <div class="mb-3">
-                  <input name="address" type="text" class="form-control" placeholder="{{ $users->address }}">
+                  <input name="address" type="text" class="form-control" value="{{ $users->address }}" id="address{{ $users->id }}">
+                </div>
+                <div class="mb-3">
+                    <select name="role" class="form-select" id="role{{ $users->id }}">
+                        <option hidden>Role</option>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Update</button>
+                </div>
+              </form> -->
+              <form action="{{ route('userUpdate', $users -> id) }}" method="post">
+                @csrf
+                @method('put')
+                <div class="mb-3">
+                  <input name="name" type="text" class="form-control" value="{{ $users->name }}">
+                </div>
+                <div class="mb-3">
+                  <input name="username" type="text" class="form-control" value="{{ $users->username }}">
+                </div>
+                <div class="mb-3">
+                  <input name="password" type="password" class="form-control" value="{{ $users->password }}">
+                </div>
+                <div class="mb-3">
+                  <input name="email" type="email" class="form-control" value="{{ $users->email }}">
+                </div>
+                <div class="mb-3">
+                  <input name="address" type="text" class="form-control" value="{{ $users->address }}">
                 </div>
                 <div class="mb-3">
                     <select name="role" class="form-select" aria-label="Default select example">
-                        <option value="{{ $users->name }}">{{ $users->name }}</option>
+                        <option hidden>{{ $users->role }}</option>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                         <option value="staff">Staff</option>

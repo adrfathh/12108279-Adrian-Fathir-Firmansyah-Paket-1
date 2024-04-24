@@ -37,7 +37,7 @@
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
-  <div class="min-height-300 bg-primary position-absolute w-100"></div>
+  <div class="min-height-100 bg-primary position-absolute w-100"></div>
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -50,7 +50,7 @@
     <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="{{ route('admin') }}">
+          <a class="nav-link" href="{{route('user.books')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
@@ -58,27 +58,35 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('users') }}">
+          <a class="nav-link " href="{{route('user.wishlist')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Users</span>
+            <span class="nav-link-text ms-1">Wishlist</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('categories') }}">
+          <a class="nav-link active" href="{{route('user.borrowed')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Categories</span>
+            <span class="nav-link-text ms-1">Borrowed</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('history') }}">
+          <a class="nav-link " href="{{route('user.review')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-app text-info text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Loan Data</span>
+            <span class="nav-link-text ms-1">Review</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{route('user.history')}}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">History</span>
           </a>
         </li>
     </div>
@@ -98,53 +106,148 @@
           <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
         </nav>
       </div>
-      <a class="btn btn-success" href="{{ route('export.books.admin.pdf') }}">Export</a>
-      <!-- <form class="btn btn-success" action="{{ route('export.books.admin.pdf') }}" method="get">
-        @csrf
-        <input class="btn btn-success" type="submit" value="Export">
-      </form> -->
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
-        @foreach($books as $books)
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-body p-3">
-              <div class="row">
-                <div class="">
-                  <div class="numbers">
-                    <h5 class="font-weight-bolder m-0">
-                      {{ $books->title }}
-                      <h6>{{ $books->category }}</h6>
-                    </h5>
-                    <div class="d-flex justify-content-between" style="gap: 2px;">
-                      <p class="text-sm mb-0 text-uppercase font-weight-bold">{{ $books->author }}</p>
-                    @if ($books->borrow->where('borrow_status', 'Dipinjam')->isNotEmpty())
-                      <p class="text-danger text-sm mb-0 text-uppercase font-weight-bold">Tidak Tersedia</p>
-                    @else
-                      <p class="text-info text-sm mb-0 text-uppercase font-weight-bold">Tersedia</p>
-                    @endif
+      <table class="table mt-6"  style="text-align: center;">
+        <thead>
+          <tr>
+            <th scope="col">cover</th>
+            <th scope="col">Title</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">Year Publish</th>
+            <th scope="col">Category</th>
+            <th scope="col">Return Date</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($books as $books)
+          @php
+            $hasBorrowed = $books->borrow->where('borrow_status', 'Dipinjam')->isNotEmpty();
+          @endphp
+          @if ($hasBorrowed)
+            @if ($books->borrow->where('borrow_status', 'Dipinjam')->first()->user_id != Auth::user()->id)
+            @else
+              <tr>
+                <td><img src="{{ asset('storage/book/z0Ska9SsdgGH2eq1BM2e6cCAzPz2Hwt5feaKq8w6.jpg') }}" style="height: 10rem;"></td>
+                <td>{{$books -> title}}</td>
+                <td>{{$books -> publisher}}</td>
+                <td>{{$books -> year_publish}}</td>
+                <td>{{$books -> category}}</td>
+                <td>{{ $books->borrow->where('borrow_status', 'Dipinjam')->first()->return_date }}</td>
+                <td class="d-flex flex-column">
+                @if ($hasBorrowed)
+                  @if ($books->borrow->where('borrow_status', 'Dipinjam')->first()->user_id != Auth::user()->id)
+                    <form action="{{ route('user.borrow', $books -> id) }}" method="post">
+                    @csrf
+                    <input type="hidden" name="book_id" value="{{ $books -> id }}">
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="borrow_status" value="Dipinjam">
+                    <input type="hidden" name="borrow_date" value="{{ date('Y-m-d') }}">
+                    <input type="hidden" name="return_date" value="-">
+                    <button type="submit" class="btn btn-success" style="text-transform: none;">Borrow</button>
+                    <!-- <input class="btn btn-success" type="submit" value="Borrow"> -->
+                  </form>
+                  @endif
+                @else
+                  <form action="{{ route('user.borrow', $books -> id) }}" method="post">
+                    @csrf
+                    <input type="hidden" name="book_id" value="{{ $books -> id }}">
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="borrow_status" value="Dipinjam">
+                    <input type="hidden" name="borrow_date" value="{{ date('Y-m-d') }}">
+                    <input type="hidden" name="return_date" value="-">
+                    <button type="submit" class="btn btn-success" style="text-transform: none;">Borrow</button>
+                    <!-- <input class="btn btn-success" type="submit" value="Borrow"> -->
+                  </form>
+                @endif
+                  @if ($books->review->where('user_id', Auth::user()->id)->count() == 0)
+                    <!-- If user has not reviewed the book -->
+                    <div class="d-flex justify-content-center">
+                      <a href="{{ route('user.addReview', $books->id) }}" class="btn btn-info" tabindex="-1" role="button">Add Review</a>
                     </div>
-                    <img class="rounded" style="height: 30rem; margin-top: 1rem;" src="{{ asset('storage/book/z0Ska9SsdgGH2eq1BM2e6cCAzPz2Hwt5feaKq8w6.jpg') }}">
-                    <p class="text-sm mt-2 font-weight-bold text-center" style="margin-bottom: 1.5rem;">{{ $books->publisher }} - {{ $books->year_publish }}</p>
-                    <div class="d-flex" style="gap: 1rem;">
-                      <a href="/editBook/{{ $books->id }}" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Edit</a>
-                      <form action="/deleteBook/{{ $books->id }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <input class="btn btn-danger" type="submit" value="Delete">
-                      </form>
+                  @else
+                    <!-- If user has reviewed the book -->
+                    <div class="d-flex justify-content-center">
+                      <a href="{{ route('user.editReview', $books->review->where('user_id', Auth::user()->id)->first()->id) }}" class="btn btn-info" tabindex="-1" role="button">Edit Review</a>
                     </div>
-                  </div>
+                  @endif
+                  <form action="{{ route('user.removeBorrow', $books->id) }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <input class="btn btn-danger" type="submit" value="Return">
+                  </form>
+                </td>
+              </tr>
+            @endif
+          @else
+          <tr>
+            <td><img src="{{ asset('storage/book/z0Ska9SsdgGH2eq1BM2e6cCAzPz2Hwt5feaKq8w6.jpg') }}" style="height: 10rem;"></td>
+            <td>{{$books -> title}}</td>
+            <td>{{$books -> publisher}}</td>
+            <td>{{$books -> year_publish}}</td>
+            <td>{{$books -> category}}</td>
+            <td class="d-flex flex-column">
+            @if ($hasBorrowed)
+              @if ($books->borrow->where('borrow_status', 'Dipinjam')->first()->user_id != Auth::user()->id)
+                <form action="">
+                  <input class="btn btn-danger" type="submit" value="Unavailable" disabled>
+                </form>
+              @else
+              <form action="{{ route('user.borrow', $books -> id) }}" method="post">
+                @csrf
+                <input type="hidden" name="book_id" value="{{ $books -> id }}">
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="borrow_status" value="Dipinjam">
+                <input type="hidden" name="borrow_date" value="{{ date('Y-m-d') }}">
+                <input type="hidden" name="return_date" value="-">
+                <button type="submit" class="btn btn-success" style="text-transform: none;">Borrow</button>
+                <!-- <input class="btn btn-success" type="submit" value="Borrow"> -->
+              </form>
+              @endif
+            @else
+              <form action="{{ route('user.borrow', $books -> id) }}" method="post">
+                @csrf
+                <input type="hidden" name="book_id" value="{{ $books -> id }}">
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="borrow_status" value="Dipinjam">
+                <input type="hidden" name="borrow_date" value="{{ date('Y-m-d') }}">
+                <input type="hidden" name="return_date" value="-">
+                <button type="submit" class="btn btn-success" style="text-transform: none;">Borrow</button>
+                <!-- <input class="btn btn-success" type="submit" value="Borrow"> -->
+              </form>
+            @endif
+              <!-- <a class="btn btn-primary" href="#" role="button">Review</a> -->
+              <form action="{{ route('user.review') }}" method="get">
+                @csrf
+                <input class="btn btn-primary" type="submit" value="Review">
+              </form>
+              @if ($books->review->where('user_id', Auth::user()->id)->count() == 0)
+                <!-- If user has not reviewed the book -->
+                <div class="d-flex justify-content-center">
+                  <a href="{{ route('user.addReview', $books->id) }}" class="btn btn-info" tabindex="-1" role="button">Add Review</a>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        @endforeach
-        <a href="{{ route('addBook') }}" class="btn btn-primary mt-3" tabindex="-1" role="button" aria-disabled="true">Add Book</a>
+              @else
+                <!-- If user has reviewed the book -->
+                <div class="d-flex justify-content-center">
+                  <a href="{{ route('user.editReview', $books->review->where('user_id', Auth::user()->id)->first()->id) }}" class="btn btn-info" tabindex="-1" role="button">Edit Review</a>
+                </div>
+              @endif
+              <form action="{{ route('user.removeBorrow', $books->id) }}" method="post">
+                @csrf
+                @method('delete')
+                <input class="btn btn-danger" type="submit" value="Return">
+              </form>
+            </td>
+          </tr>
+          @endif
+          @endforeach
+        </tbody>
+      </table>
       </div>
+    </div>
   </main>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">

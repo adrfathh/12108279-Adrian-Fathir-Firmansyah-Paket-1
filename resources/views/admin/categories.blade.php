@@ -73,23 +73,15 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="./pages/virtual-reality.html">
+          <a class="nav-link " href="{{ route('history') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-app text-info text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Loan Data</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link " href="./pages/rtl.html">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">RTL</span>
-          </a>
-        </li>
     </div>
-    <div class="sidenav-footer mx-3 ">
+    <div class="sidenav-footer mx-3" style="margin-top: 19rem;">
       <a class="btn btn-primary btn-sm mb-0 w-100" href="{{ route('logout') }}" type="button">Log Out</a>
     </div>
   </aside>
@@ -154,9 +146,15 @@
                             </div>
                         </td>
                         <td class="align-middle">
-                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                            <a href="/editCategory/{{ $categories->id }}" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                 Edit
                             </a>
+                            <form action="/deleteCategory/{{ $categories->id }}" method="post">
+                              @csrf
+                              @method ('delete')
+                              <!-- <button type="submit">Delete</button> -->
+                              <input style="padding: 0; margin: 0; border: none; background-color: transparent;" class="text-danger font-weight-bold text-xs" type="submit" value="Delete">
+                            </form>
                         </td>
                     </tr>
                     @endforeach

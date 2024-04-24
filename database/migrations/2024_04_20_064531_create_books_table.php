@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image');
             $table->integer('year_publish');
             $table->string('category');
-            $table->string('book_status');
+            $table->enum('book_status', ['Tersedia', 'Tidak tersedia']);
             $table->timestamps();
         });
     }

@@ -49,16 +49,16 @@ class User extends Authenticatable
 
     public function borrow()
     {
-        return $this->hasMany(Borrow::class, 'users_id');
+        return $this->hasMany(Borrow::class, 'user_id');
     }
 
     public function collection()
     {
-        return $this->hasMany(Collection::class);
+        return $this->hasMany(Collection::class, 'user_id');
     }
 
     public function review()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class, 'user_id');
     }
 }

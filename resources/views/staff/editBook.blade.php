@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Add Book
+    Add Users
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -91,7 +91,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mt-6">Add Book
+            <h1 class="text-white mt-6">Edit user
             </h1>
           </div>
         </div>
@@ -105,33 +105,34 @@
               <h5>Perpustakaan Digital</h5>
             </div>
             <div class="card-body">
-              <form action="{{ route('bookStore') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('bookUpdateStaff', $books -> id) }}" method="post">
                 @csrf
+                @method('put')
                 <div class="mb-3">
-                  <input name="author" type="text" class="form-control" placeholder="Author">
+                  <input name="author" type="text" class="form-control" value="{{ $books->author }}">
                 </div>
                 <div class="mb-3">
-                  <input name="title" type="text" class="form-control" placeholder="Title">
+                  <input name="title" type="text" class="form-control" value="{{ $books->title }}">
                 </div>
                 <div class="mb-3">
-                  <input name="publisher" type="text" class="form-control" placeholder="Publisher">
+                  <input name="publisher" type="text" class="form-control" value="{{ $books->publisher }}">
                 </div>
                 <div class="mb-3">
-                  <input name="year_publish" type="number" class="form-control" placeholder="Year Publish">
+                  <input name="year_publish" type="number" class="form-control" value="{{ $books->year_publish }}">
                 </div>
                 <div class="mb-3">
-                  <input name="image" type="file" class="form-control" placeholder="Image">
+                  <input name="image" type="file" class="form-control" value="{{ $books->image }}">
                 </div>
                 <div class="mb-3">
-                    <select name="category" class="form-select" aria-label="Default select example">
-                      @foreach ($categories as $categories)
-                      <option hidden>Category</option>
-                      <option value="{{ $categories->name_categories }}">{{ $categories->name_categories }}</option>
-                      @endforeach
-                    </select>
+                  <select name="category" class="form-select" aria-label="Default select example">
+                    <option hidden>Category</option>
+                    @foreach($categories as $category)
+                      <option value="{{$category->name_categories}}">{{$category->name_categories}}</option>
+                    @endforeach
+                  </select>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Add</button>
+                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Update</button>
                 </div>
               </form>
             </div>

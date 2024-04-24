@@ -57,7 +57,7 @@ class AuthController extends Controller
             }elseif(Auth::user()->role == 'staff'){
                 return redirect()->route('staff');
             }else{
-                return redirect()->route('user');
+                return redirect()->route('user.books');
             }
         }else{
             return redirect()->back()->with('danger', "Gagal login, silahkan cek kembali!");

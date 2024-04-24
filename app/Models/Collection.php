@@ -17,7 +17,7 @@ class Collection extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class, 'book_id');
+        return $this->belongsTo(Books::class, 'book_id');
     }
 
     public function users()

@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Add Book
+    Add Users
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -105,7 +105,7 @@
               <h5>Perpustakaan Digital</h5>
             </div>
             <div class="card-body">
-              <form action="{{ route('bookStore') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('bookStoreStaff') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                   <input name="author" type="text" class="form-control" placeholder="Author">

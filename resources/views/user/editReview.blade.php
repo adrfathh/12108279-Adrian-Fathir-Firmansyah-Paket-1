@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Add Book
+    Add Users
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -91,7 +91,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mt-6">Add Book
+            <h1 class="text-white mt-6">Edit Review Book
             </h1>
           </div>
         </div>
@@ -102,36 +102,23 @@
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
           <div class="card z-index-0">
             <div class="card-header text-center pt-4">
-              <h5>Perpustakaan Digital</h5>
+              <h5>Review for <strong>{{ $review -> book -> title }}</strong></h5>
             </div>
             <div class="card-body">
-              <form action="{{ route('bookStore') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('user.reviewUpdate', $review -> book -> id) }}" method="post">
                 @csrf
+                @method('put')
                 <div class="mb-3">
-                  <input name="author" type="text" class="form-control" placeholder="Author">
+                  <!-- <input type="hidden" name="book_id" value="{{ $review -> book -> id }}">
+                  <input type="hidden" name="user_id" value="{{ Auth::user()->id }}"> -->
+                  <textarea name="review" class="form-control" placeholder="Edit your review" id="floatingTextarea2" style="height: 100px"></textarea>
                 </div>
                 <div class="mb-3">
-                  <input name="title" type="text" class="form-control" placeholder="Title">
-                </div>
-                <div class="mb-3">
-                  <input name="publisher" type="text" class="form-control" placeholder="Publisher">
-                </div>
-                <div class="mb-3">
-                  <input name="year_publish" type="number" class="form-control" placeholder="Year Publish">
-                </div>
-                <div class="mb-3">
-                  <input name="image" type="file" class="form-control" placeholder="Image">
-                </div>
-                <div class="mb-3">
-                    <select name="category" class="form-select" aria-label="Default select example">
-                      @foreach ($categories as $categories)
-                      <option hidden>Category</option>
-                      <option value="{{ $categories->name_categories }}">{{ $categories->name_categories }}</option>
-                      @endforeach
-                    </select>
+                <label for="customRange2" class="form-label">Rating 1 - 5</label>
+                <input name="rating" type="range" class="form-range" min="1" max="5" id="customRange2">
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Add</button>
+                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Rate</button>
                 </div>
               </form>
             </div>

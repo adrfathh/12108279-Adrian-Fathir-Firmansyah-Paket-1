@@ -27,11 +27,11 @@ class Books extends Model
     
     public function collection()
     {
-        return $this->hasMany(Collection::class);
+        return $this->hasMany(Collection::class, 'book_id');
     }
 
     public function review()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class, 'book_id');
     }
 }

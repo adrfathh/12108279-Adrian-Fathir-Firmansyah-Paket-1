@@ -46,10 +46,10 @@
       </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('admin') }}">
+          <a class="nav-link" href="{{ route('staff') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
@@ -57,15 +57,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="{{ route('users') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Users</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " href="{{ route('categories') }}">
+          <a class="nav-link active" href="{{ route('categoriesStaff') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
             </div>
@@ -73,7 +65,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('history') }}">
+          <a class="nav-link " href="{{ route('historyStaff') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-app text-info text-sm opacity-10"></i>
             </div>
@@ -104,58 +96,55 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Users table</h6>
+              <h6>Add Categories</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
-                {{-- if else --}}
+              <div class="card-body">
+              <form action="{{ route('categoriesStoreStaff') }}" method="post">
+                @csrf
+                <div class="mb-3">
+                  <input name="name_categories" type="text" class="form-control" placeholder="Name Category">
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn bg-primary text-white w-100 my-4 mb-2">Add</button>
+                </div>
+              </form>
+            </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Categories table</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name Category</th>
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($users as $users)
+                    @foreach ($categories as $categories)
                     <tr>
                         <td>
                             <div class="d-flex px-2 py-1">
-                                <div>
-                                    <img src="/assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                                </div>
                                 <div class="d-flex flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">{{ $users->id }}</h6>
+                                    <h6 class="mb-0 text-sm">{{ $categories->name_categories }}</h6>
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <p class="text-xs font-weight-bold mb-0">{{ $users->name }}</p>
-                        </td>
-                        <td>
-                            <p class="text-xs font-weight-bold mb-0">{{ $users->username }}</p>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                            <p class="text-xs font-weight-bold mb-0">{{ $users->email }}</p>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                            <p class="text-xs font-weight-bold mb-0">{{ $users->role }}</p>
-                        </td>
-                        <td class="align-middle text-center">
-                            <span class="text-secondary text-xs font-weight-bold">{{ $users->address }}</span>
-                        </td>
                         <td class="align-middle">
-                            <a href="/editUser/{{ $users->id }}" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                            <a href="/editCategoryStaff/{{ $categories->id }}" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                 Edit
                             </a>
-                            <form action="/deleteUser/{{ $users->id }}" method="post">
+                            <form action="/deleteCategoryStaff/{{ $categories->id }}" method="post">
                               @csrf
                               @method ('delete')
+                              <!-- <button type="submit">Delete</button> -->
                               <input style="padding: 0; margin: 0; border: none; background-color: transparent;" class="text-danger font-weight-bold text-xs" type="submit" value="Delete">
                             </form>
                         </td>
@@ -166,7 +155,6 @@
               </div>
             </div>
           </div>
-          <a href="{{ route('addUser') }}" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Add User</a>
         </div>
       </div>
     </div>
